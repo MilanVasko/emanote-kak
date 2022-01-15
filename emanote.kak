@@ -60,13 +60,13 @@ define-command -docstring '
 	This is useful for specifying the kind of connection to use. Some examples:
 
 		# this inserts a regular link
-		: emanote-search-and-insert [[ ]]
+		: emanote-search-and-insert ''[['' '']]''
 
 		# this inserts a parent link
-		: emanote-search-and-insert #[[ ]]
+		: emanote-search-and-insert ''#[['' '']]''
 
 		# this inserts a child link
-		: emanote-search-and-insert [[ ]]#
+		: emanote-search-and-insert ''[['' '']]#''
 ' -params ..2 emanote-search-and-insert %{ evaluate-commands %sh{
 	if ! command -v "$kak_opt_emanote_popup_selector_program" 2>&1 > /dev/null; then
 		printf "fail \"Option 'kak_opt_emanote_popup_selector_program' must be set to a valid non-empty value.\""
@@ -87,13 +87,13 @@ define-command -docstring '
 	This is useful for specifying the kind of connection to use. Some examples:
 
 		# this inserts a regular link
-		: emanote-search-all-and-insert [[ ]]
+		: emanote-search-all-and-insert ''[['' '']]''
 
 		# this inserts a parent link
-		: emanote-search-all-and-insert #[[ ]]
+		: emanote-search-all-and-insert ''#[['' '']]''
 
 		# this inserts a child link
-		: emanote-search-all-and-insert [[ ]]#
+		: emanote-search-all-and-insert ''[['' '']]#''
 ' -params ..2 emanote-search-all-and-insert %{ evaluate-commands %sh{
 	if ! command -v "$kak_opt_emanote_popup_selector_program" 2>&1 > /dev/null; then
 		printf "fail \"Option 'kak_opt_emanote_popup_selector_program' must be set to a valid non-empty value.\""
