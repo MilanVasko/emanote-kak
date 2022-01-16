@@ -12,6 +12,7 @@ The following utilities are used, so make sure you have them installed and in
 - [`rg`](https://github.com/BurntSushi/ripgrep) (support for other similar tools
   currently not planned, but PRs are welcome)
 - `sed`
+- `wc`
 - Any [`dmenu`](https://tools.suckless.org/dmenu/)-like utility (I recommend
   [`rofi`](https://github.com/davatorium/rofi) or
   [`bemenu`](https://github.com/Cloudef/bemenu), which I'm currently using). It
@@ -46,6 +47,7 @@ plug "MilanVasko/emanote-kak" config %{
 	map global emanote S -docstring "search all and open note"         ": emanote-search-all-and-open<ret>"
 	map global emanote i -docstring "search titles and insert note ID" ": emanote-search-and-insert [[ ]]<ret>"
 	map global emanote I -docstring "search all and insert note ID"    ": emanote-search-all-and-insert [[ ]]<ret>"
+	map global emanote g -docstring "follow the link"                  ": emanote-follow-link<ret>"
 }
 ```
 
@@ -54,9 +56,10 @@ plug "MilanVasko/emanote-kak" config %{
 The following commands are provided:
 
 - `emanote-new` - creates a new note
-- `emanote-search-and-open` - searches for notes interactively
-- `emanote-search-and-insert` - inserts the note ID of found note into the
+- `emanote-search-and-open` and `emanote-search-all-and-open` - searches for notes interactively
+- `emanote-search-and-insert` and `emanote-search-all-and-insert` - inserts the note ID of found note into the
   document
+- `emanote-follow-link` - follows the link under main selection
 
 More commands may come in the future if I get ideas for new ones - all of the
 existing ones have their origins in my personal need. For now, these should be

@@ -75,7 +75,7 @@ define-command -docstring '
 
 	selected_file="$(rg "^#( |\b)" --glob "**/*.md" --max-count 1 | sed 's/\([^:#]*\):#\s*\(.*\)/\2 (\1)/g' | $kak_opt_emanote_popup_selector_program | sed 's/.*(//g' | sed 's/\.md)$//g')"
 	if [ -n "$selected_file" ]; then
-	    printf "execute-keys -client \"%s\" \"i%s%s%s<esc>\"" "$kak_client" "$1" "$selected_file" "$2"
+		printf "execute-keys -client \"%s\" \"i%s%s%s<esc>\"" "$kak_client" "$1" "$selected_file" "$2"
 	fi
 } }
 
@@ -102,6 +102,39 @@ define-command -docstring '
 
 	selected_file="$(rg "^.+\$" --glob "**/*.md" | sed 's/\([^:]*\):\(.*\)/\2 (\1)/g' | $kak_opt_emanote_popup_selector_program | sed 's/.*(//g' | sed 's/\.md)$//g')"
 	if [ -n "$selected_file" ]; then
-	    printf "execute-keys -client \"%s\" \"i%s%s%s<esc>\"" "$kak_client" "$1" "$selected_file" "$2"
+		printf "execute-keys -client \"%s\" \"i%s%s%s<esc>\"" "$kak_client" "$1" "$selected_file" "$2"
 	fi
 } }
+
+define-command -docstring '
+	Follows the link under main selection. If there are multiple matching links,
+	emanote_popup_selector_program will be used to select between them.
+' emanote-follow-link %{
+	evaluate-commands %sh{
+		if ! command -v "$kak_opt_emanote_popup_selector_program" 2>&1 > /dev/null; then
+			printf "fail \"Option 'kak_opt_emanote_popup_selector_program' must be set to a valid non-empty value.\""
+			exit 1
+		fi
+	}
+
+	execute-keys "m<a-:><a-f>[lt]"
+	evaluate-commands %sh{
+		if [ "${#kak_selection}" = "1" ]; then
+			printf "fail \"Nothing is selected\""
+			exit 1
+		fi
+
+		files="$(rg --files --glob "**/$kak_selection.md")"
+		if [ "$(printf "%s\n" "$files" | wc -l)" -gt 1 ]; then
+			selected_file="$(printf "%s\n" "$files" | fuzzy-popup)"
+			if [ -n "$selected_file" ]; then
+				printf "edit \"$selected_file\";"
+			fi
+		elif [ -n "$files" ]; then
+			printf "edit \"$files\";"
+		else
+		printf "fail \"No file with ID '%s' was found.\";" "$kak_selection"
+		fi
+	}
+}
+
