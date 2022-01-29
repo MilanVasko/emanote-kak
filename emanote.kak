@@ -7,7 +7,7 @@ define-command -docstring '
 	will be used.
 ' -params ..1 emanote-new %{ evaluate-commands %sh{
 	if [ -z "$1" ]; then
-		filename="$(date '+%Y-%m-%dT%H-%M-%S-%m-%N').md"
+		filename="$(date '+%Y%m%d%H%M%S').md"
 	else
 		filename="$1.md"
 	fi
