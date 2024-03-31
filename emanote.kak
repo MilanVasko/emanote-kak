@@ -117,24 +117,29 @@ define-command -docstring '
 		fi
 	}
 
-	execute-keys "m<a-:><a-f>[lt]"
-	evaluate-commands %sh{
-		if [ "${#kak_selection}" = "1" ]; then
-			printf "fail \"Nothing is selected\""
-			exit 1
-		fi
+	evaluate-commands -save-regs . %{
+		execute-keys "<a-a>["
+		try %{ execute-keys "<a-a>[" }
+		execute-keys "s\[\[.*?\]\]<ret><a-t>[t]"
 
-		files="$(rg --files --glob "**/$kak_selection.md")"
-		if [ "$(printf "%s\n" "$files" | wc -l)" -gt 1 ]; then
-			selected_file="$(printf "%s\n" "$files" | fuzzy-popup)"
-			if [ -n "$selected_file" ]; then
-				printf "edit \"$selected_file\";"
+		evaluate-commands %sh{
+			if [ "${#kak_selection}" = "1" ]; then
+				printf "fail \"Nothing is selected\""
+				exit 1
 			fi
-		elif [ -n "$files" ]; then
-			printf "edit \"$files\";"
-		else
-		printf "fail \"No file with ID '%s' was found.\";" "$kak_selection"
-		fi
+
+			files="$(rg --files --glob "**/$kak_selection.md")"
+			if [ "$(printf "%s\n" "$files" | wc -l)" -gt 1 ]; then
+				selected_file="$(printf "%s\n" "$files" | fuzzy-popup)"
+				if [ -n "$selected_file" ]; then
+					printf "edit \"$selected_file\";"
+				fi
+			elif [ -n "$files" ]; then
+				printf "edit \"$files\";"
+			else
+			printf "fail \"No file with ID '%s' was found.\";" "$kak_selection"
+			fi
+		}
 	}
 }
 
