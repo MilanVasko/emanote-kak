@@ -130,14 +130,14 @@ define-command -docstring '
 
 			files="$(rg --files --glob "**/$kak_selection.md")"
 			if [ "$(printf "%s\n" "$files" | wc -l)" -gt 1 ]; then
-				selected_file="$(printf "%s\n" "$files" | fuzzy-popup)"
+				selected_file="$(printf "%s\n" "$files" | "$kak_opt_emanote_popup_selector_program")"
 				if [ -n "$selected_file" ]; then
 					printf "edit \"$selected_file\";"
 				fi
 			elif [ -n "$files" ]; then
 				printf "edit \"$files\";"
 			else
-			printf "fail \"No file with ID '%s' was found.\";" "$kak_selection"
+				printf "fail \"No file with ID '%s' was found.\";" "$kak_selection"
 			fi
 		}
 	}
